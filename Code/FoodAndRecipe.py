@@ -1,12 +1,31 @@
-# Food has a name and an expiry date (in days).
-# A negative expiry date means the food is expired.
-class Food:
-    def __init__(self, name: str, expiry_date: int):
-        self.name = name
-        self.expiry_date = expiry_date  # negative = expired
+from enum import Enum
 
-    def is_expired(self) -> bool:
-        return self.expiry_date < 0
+class FoodType(Enum):
+    CANNED = 1
+    VEG_OR_FRUIT = 2
+    MEAT = 3
+
+
+class StorageType(Enum):
+    REFRIGERATE = 1
+    FROZEN = 2
+    NORMAL_TEMP = 3
+
+
+# --- Food class ---
+class Food:
+    def __init__(self, name: str, food_type: FoodType, date_in_fridge: int, storage_type: StorageType):
+        self.name = name
+        self.food_type = food_type
+        self.date_in_fridge = date_in_fridge
+        self.storage_type = storage_type
+
+    def __str__(self):
+        return (f"{self.name} ({self.food_type.value}) stored as {self.storage_type.value} "
+                f"since {self.date_in_fridge}")
+    
+
+
 
 # Fridge stores food items
 # It can check if it can cook a recipe based on available and not expired food.
@@ -35,20 +54,3 @@ class Recipe:
         self.name = name
         self.requirements = requirements
 
-
-if __name__ == "__main__":
-    apple = Food("apple", 5)
-    milk = Food("milk", -1)  # expired
-    egg = Food("egg", 3)
-    
-    fridge = Fridge()
-    fridge.add_food(apple)
-    fridge.add_food(milk)
-    fridge.add_food(egg)
-
-    recipe = Recipe("Apple Omelette", ["apple", "egg"])
-
-    print(fridge.can_cook(recipe))  # True (both apple and egg are available and not expired)
-
-    recipe2 = Recipe("Milkshake", ["milk"])
-    print(fridge.can_cook(recipe2))  # False (milk is expired)
