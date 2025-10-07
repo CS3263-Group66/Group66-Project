@@ -24,6 +24,25 @@ class Food:
         return (f"{self.name} ({self.food_type.value}) stored as {self.storage_type.value} "
                 f"since {self.date_in_fridge}")
     
+    def __repr__(self):
+        return self.__str__()
+    
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "food_type": self.food_type.name,         # or .value
+            "date_in_fridge": self.date_in_fridge,
+            "storage_type": self.storage_type.name    # or .value
+        }
+    
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            name=data["name"],
+            food_type=FoodType[data["food_type"]],          # use bracket notation to convert string to Enum
+            date_in_fridge=data["date_in_fridge"],
+            storage_type=StorageType[data["storage_type"]]
+        )
 
 
 
