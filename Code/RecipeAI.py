@@ -12,7 +12,7 @@ class RecipeAI:
         "Add": "Add a new food item into the fridge",
         "List": "List the food items in the fridge",
         "Remove x": "Remove food of index x as shown in the `List` from the fridge, x is required",
-        "Query x y ...": "Make query on the given model. x, y are query arguments passed into the model.infer.query() function"
+        "Query x y ...": "Make query on the given model. x, y are array elements of the query passed into the model.infer.query()."
     }
 
     # initialises the AI with SampleFoodBN model, update this field accordingly with the main model communicating with the user.
