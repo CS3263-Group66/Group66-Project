@@ -1,5 +1,5 @@
 from enum import Enum
-
+from typing import Optional
 class FoodType(Enum):
     CANNED = 1
     VEG_OR_FRUIT = 2
@@ -47,6 +47,12 @@ class Fridge:
             if not self.has_food(ingredient):
                 return False
         return True
+    
+    def extract_food(self, food_name: str) -> Optional[Food]:
+        for f in self.foods:
+            if f.name == food_name and not f.is_expired():
+                return f
+        return None
 
 # Recipe has a name and a list of required food names.
 class Recipe:
