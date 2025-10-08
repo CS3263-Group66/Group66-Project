@@ -11,15 +11,25 @@ class AddFoodCommand:
         self.fridge.add_food(self.food)
         self.data_storage.write_food_data(self.fridge.foods)
 
+class RemoveFoodCommand:
+    def __init__(self, fridge: Fridge, index: int, data_storage: Data_Storage):
+        self.fridge = fridge
+        self.index = index
+        self.data_storage = data_storage
+
+    def execute(self):
+        self.fridge.foods.pop(self.index - 1)
+        self.data_storage.write_food_data(self.fridge.foods)
+
 class ListCommand:
     def __init__(self, fridge: Fridge):
         self.fridge = fridge
     
     def execute(self):
-        print(f"current food in fridge: {self.fridge.foods}")
+        print(f"Current food in fridge:\n" + 
+              "\n".join((f"{index + 1}. {str(food)}") for index, food in enumerate(self.fridge.foods)))
 
 class Command_Handler:
-
     def __init__(self, fridge: Fridge, data_storage: Data_Storage):
         self.fridge = fridge
         self.data_storage = data_storage
@@ -32,7 +42,15 @@ class Command_Handler:
                 AddFoodCommand(food, self.fridge, self.data_storage).execute()
             case "list":
                 ListCommand(self.fridge).execute()
+            case "remove":
+                if (len(splitted_command) < 2):
+                    print("Missing food item index to be removed")
+                food_index = int(splitted_command[1])
+                RemoveFoodCommand(self.fridge, food_index, self.data_storage).execute()
+            case _:
+                print("Invalid command")
     
+    # allows users to choose an option from an enum class
     def choose_enum(self, enum_class):
         options = list(enum_class)
         print(f"Select a {enum_class.__name__}:")
@@ -48,7 +66,7 @@ class Command_Handler:
             except ValueError:
                 print("Invalid input. Enter a number.")
 
-
+    # gets the food item specifications from the user
     def get_food_from_user(self) -> Food:
         name = input("Enter food name: ")
         

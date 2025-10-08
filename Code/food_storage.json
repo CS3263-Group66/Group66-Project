@@ -1,20 +1,8 @@
 [
     {
-        "name": "canned food",
-        "food_type": "CANNED",
-        "date_in_fridge": "20",
-        "storage_type": "REFRIGERATE"
-    },
-    {
         "name": "eggs",
         "food_type": "VEG_OR_FRUIT",
         "date_in_fridge": "3",
         "storage_type": "REFRIGERATE"
-    },
-    {
-        "name": "bread",
-        "food_type": "CANNED",
-        "date_in_fridge": "3",
-        "storage_type": "NORMAL_TEMP"
     }
 ]
