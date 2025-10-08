@@ -1,17 +1,22 @@
 from FoodAndRecipe import Food, Fridge, FoodType, StorageType
 from DataStorage import Data_Storage
+from SampleFoodBN import SampleFoodBN
 
-class AddFoodCommand:
+class Command:
+    def __init__(self):
+        pass
+
+class AddFoodCommand(Command):
     def __init__(self, food: Food, fridge: Fridge, data_storage: Data_Storage):
-        self.food = food
         self.fridge = fridge
+        self.food = food
         self.data_storage = data_storage
     
     def execute(self):
         self.fridge.add_food(self.food)
         self.data_storage.write_food_data(self.fridge.foods)
 
-class RemoveFoodCommand:
+class RemoveFoodCommand(Command):
     def __init__(self, fridge: Fridge, index: int, data_storage: Data_Storage):
         self.fridge = fridge
         self.index = index
@@ -21,34 +26,50 @@ class RemoveFoodCommand:
         self.fridge.foods.pop(self.index - 1)
         self.data_storage.write_food_data(self.fridge.foods)
 
-class ListCommand:
+class ListCommand(Command):
     def __init__(self, fridge: Fridge):
         self.fridge = fridge
     
     def execute(self):
         print(f"Current food in fridge:\n" + 
               "\n".join((f"{index + 1}. {str(food)}") for index, food in enumerate(self.fridge.foods)))
+        
+class QueryCommand(Command):
+    def __init__(self, query: list[str], model):
+        self.query = query
+        self.model = model
+    
+    def execute(self):
+        query_result = self.model.infer.query(self.query)
+        print(query_result)
+
 
 class Command_Handler:
-    def __init__(self, fridge: Fridge, data_storage: Data_Storage):
+    def __init__(self, fridge: Fridge, data_storage: Data_Storage, model: SampleFoodBN):
         self.fridge = fridge
         self.data_storage = data_storage
+        self.model = model
 
     def parseCommand(self, raw_command: str):
         splitted_command = raw_command.split(" ")
         match splitted_command[0].lower():
             case "add":
                 food: Food = self.get_food_from_user()
-                AddFoodCommand(food, self.fridge, self.data_storage).execute()
+                return AddFoodCommand(food, self.fridge, self.data_storage)
             case "list":
-                ListCommand(self.fridge).execute()
+                return ListCommand(self.fridge)
             case "remove":
                 if (len(splitted_command) < 2):
                     print("Missing food item index to be removed")
                 food_index = int(splitted_command[1])
-                RemoveFoodCommand(self.fridge, food_index, self.data_storage).execute()
+                return RemoveFoodCommand(self.fridge, food_index, self.data_storage)
+            case "query":
+                query_args = raw_command[len("query "):].split()
+                return QueryCommand(query_args, self.model)
             case _:
                 print("Invalid command")
+                return None
+        
     
     # allows users to choose an option from an enum class
     def choose_enum(self, enum_class):
