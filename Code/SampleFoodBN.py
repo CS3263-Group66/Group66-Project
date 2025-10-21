@@ -4,6 +4,8 @@ from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from pgmpy.inference import VariableElimination
 
+from BNGenerator import BNGenerator
+
 class SampleFoodBN:
     def __init__(self):
         self.model = DiscreteBayesianNetwork(

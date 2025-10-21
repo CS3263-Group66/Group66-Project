@@ -50,7 +50,7 @@ class RecipeAI:
             
 if __name__ == "__main__":
     fridge = Fridge()
-    data_storage = Data_Storage("food_storage.json")
+    data_storage = Data_Storage("food_storage.json", "recipe_storage.json")
     model = SampleFoodBN()
     command_handler = Command_Handler(fridge, data_storage, model)
     ai = RecipeAI(fridge, data_storage, command_handler, model)

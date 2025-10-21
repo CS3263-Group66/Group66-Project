@@ -1,0 +1,18 @@
+{
+    "recipes": [
+        {
+            "name": "Apple Salad",
+            "requirements": [
+                "apple",
+                "egg"
+            ]
+        },
+        {
+            "name": "Banan Salad",
+            "requirements": [
+                "banana",
+                "egg"
+            ]
+        }
+    ]
+}

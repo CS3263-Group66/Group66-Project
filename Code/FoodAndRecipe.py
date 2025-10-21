@@ -79,3 +79,29 @@ class Recipe:
         self.name = name
         self.requirements = requirements
 
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "requirements": self.requirements
+        }
+
+    def __repr__(self):
+        return f"name: {self.name}, requirements: {self.requirements}"
+
+class RecipeBook:
+    def __init__(self, recipes: list[Recipe] = None):
+        self.recipes = recipes if recipes is not None else []
+
+    def add_recipe(self, recipe: Recipe):
+        self.recipes.append(recipe)
+
+    def to_dict(self):
+        return {
+            "recipes": [recipe.to_dict() for recipe in self.recipes]
+        }
+    
+    def __repr__(self):
+        recipe_lines = "\n".join(repr(recipe) for recipe in self.recipes)
+        return f"RecipeBook:\n{recipe_lines}"
+
+    
