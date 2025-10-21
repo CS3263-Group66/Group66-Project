@@ -46,7 +46,7 @@ class QueryCommand(Command):
     
     def execute(self):
         recipebook = self.data_storage.read_recipe_data()
-        print(self.model.query(recipebook))
+        print(self.model.query_recipe_success_prob(recipebook))
         
         
 
