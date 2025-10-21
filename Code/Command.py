@@ -1,3 +1,7 @@
+from pgmpy.inference import VariableElimination
+
+from BNGenerator import BNGenerator
+from RecipeAI import RecipeAI
 from FoodAndRecipe import Food, Fridge, FoodType, StorageType
 from DataStorage import Data_Storage
 from SampleFoodBN import SampleFoodBN
@@ -35,17 +39,20 @@ class ListCommand(Command):
               "\n".join((f"{index + 1}. {str(food)}") for index, food in enumerate(self.fridge.foods)))
         
 class QueryCommand(Command):
-    def __init__(self, query: list[str], model):
+    def __init__(self, query: list[str], data_storage: Data_Storage, model: RecipeAI):
         self.query = query
         self.model = model
+        self.data_storage = data_storage
     
     def execute(self):
-        query_result = self.model.infer.query(self.query)
-        print(query_result)
+        recipebook = self.data_storage.read_recipe_data()
+        print(self.model.query(recipebook))
+        
+        
 
 
 class Command_Handler:
-    def __init__(self, fridge: Fridge, data_storage: Data_Storage, model: SampleFoodBN):
+    def __init__(self, fridge: Fridge, data_storage: Data_Storage, model:RecipeAI):
         self.fridge = fridge
         self.data_storage = data_storage
         self.model = model
@@ -65,7 +72,7 @@ class Command_Handler:
                 return RemoveFoodCommand(self.fridge, food_index, self.data_storage)
             case "query":
                 query_args = raw_command[len("query "):].split()
-                return QueryCommand(query_args, self.model)
+                return QueryCommand(query_args, self.data_storage, self.model)
             case _:
                 print("Invalid command")
                 return None

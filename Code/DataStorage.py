@@ -52,3 +52,10 @@ class Data_Storage:
             recipes.append(recipe)
         
         return RecipeBook(recipes)
+
+# data_storage = Data_Storage("food_storage.json", "recipe_storage.json")
+# recipe1 = Recipe("Apple Salad", ["apple", "egg"])
+# recipe2 = Recipe("Banan Salad", ["banana", "egg"])
+# recipe_book = RecipeBook([recipe1, recipe2])
+# data_storage.write_recipe_data(recipe_book)
+# print(data_storage.read_recipe_data())
