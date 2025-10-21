@@ -1,5 +1,3 @@
-from pgmpy.factors.discrete import TabularCPD
-
 global_cpd_expired_values = [
     # P(Fresh)
     [

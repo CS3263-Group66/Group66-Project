@@ -44,3 +44,8 @@ Assume finite recipe
 4.3  Personal preference
 
 5. Minor: add proper typing
+
+6. Modify the original bayesian network
+
+Some notes on learning:
+EM algorithm: https://www.geeksforgeeks.org/machine-learning/ml-expectation-maximization-algorithm/

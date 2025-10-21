@@ -15,7 +15,7 @@ class Data_Storage:
             with open(self.food_file_path, "w") as f:
                 json.dump([], f)
             print("storage file successfully created")
-            return False;
+            return False
         else:
             return True
 

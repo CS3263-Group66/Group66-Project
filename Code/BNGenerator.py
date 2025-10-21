@@ -75,8 +75,8 @@ class BNGenerator:
 
         # Add feasibility node and edges to Success
         nodes.add("Feasibility")
-        nodes.add("Success")
-        edges.append(("Feasibility", "Success"))
+        # nodes.add("Success")
+        # edges.append(("Feasibility", "Success"))
 
         # --- Feasibility CPD (Noisy-OR style) ---
         num_foods = len(feasibility_evidence)
@@ -100,15 +100,15 @@ class BNGenerator:
         )
         cpds.append(feasibility_cpd)
 
-        # --- Success CPD ---
-        success_cpd = TabularCPD(
-            variable="Success",
-            variable_card=2,
-            values=[[0.9, 0.05], [0.1, 0.95]],
-            evidence=["Feasibility"],
-            evidence_card=[2],
-        )
-        cpds.append(success_cpd)
+        # # --- Success CPD ---
+        # success_cpd = TabularCPD(
+        #     variable="Success",
+        #     variable_card=2,
+        #     values=[[0.9, 0.05], [0.1, 0.95]],
+        #     evidence=["Feasibility"],
+        #     evidence_card=[2],
+        # )
+        # cpds.append(success_cpd)
 
         # --- Build BN ---
         bn = DiscreteBayesianNetwork(edges)
