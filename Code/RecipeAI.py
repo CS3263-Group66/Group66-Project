@@ -20,6 +20,7 @@ class RecipeAI:
         self.fridge = fridge
         self.recipebook = recipebook
 
+    # Create a Discrete BN for each recipe in recipebook, calculate the success probability for each recipe
     def query_recipe_success_prob(self, recipebook: RecipeBook):
         result = []
         for recipe in recipebook.recipes:

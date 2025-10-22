@@ -27,10 +27,7 @@ class RecipeAIApp:
         self.fridge = fridge
         self.data_storage = data_storage
         self.command_handler = command_handler
-        self.model = model
-
-    # def getRecipeSuccessRate(recipe: Recipe):
-        
+        self.model = model        
     
     def print_instruction_guide():
         print("------------------")
