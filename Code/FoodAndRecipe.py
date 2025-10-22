@@ -21,8 +21,8 @@ class Food:
         self.storage_type = storage_type
 
     def __str__(self):
-        return (f"{self.name} ({self.food_type.value}) stored as {self.storage_type.value} "
-                f"since {self.date_in_fridge}")
+        return (f"{self.name} ({self.food_type.name}) stored as {self.storage_type.name} "
+                f"since {self.date_in_fridge} days ago")
     
     def __repr__(self):
         return self.__str__()
