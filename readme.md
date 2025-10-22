@@ -49,3 +49,26 @@ Assume finite recipe
 
 Some notes on learning:
 EM algorithm: https://www.geeksforgeeks.org/machine-learning/ml-expectation-maximization-algorithm/
+
+# Week 10 tasks
+1. utitlity and decision making
+- current U: fridge count * success_rate (sounds like expected)
+- Add more complex attributes:
+   - taste
+   - ammount
+   - expiry_cnt
+U(recipe) = f(recipe.taste, recipe.ammount, recipe.expiry_cnt) 
+
+- consider using ML in getting f 
+- How to train? use random generator to generate some data
+- Decision making process -> decision tree (see attachment)
+
+2. Integration and debug
+- make sure no bugs
+- can have some basic demo
+
+3. Framework of report
+- Decision network architecture
+- BN network architecture and corresponding learning
+- Utility function and corresponding learning
+- Responsible AI

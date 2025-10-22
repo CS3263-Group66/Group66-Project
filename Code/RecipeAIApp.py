@@ -38,7 +38,6 @@ class RecipeAIApp:
         print("------------------")
 
     def start(self):
-        print("loading model...")
         food_data = self.data_storage.read_food_data()
         self.fridge.foods = food_data
         RecipeAIApp.print_instruction_guide()
@@ -51,6 +50,7 @@ class RecipeAIApp:
                 print("command cannot be parsed")
             
 if __name__ == "__main__":
+    print("loading model...")
     fridge = Fridge()
     data_storage = Data_Storage("food_storage.json", "recipe_storage.json")
     recipebook: RecipeBook = data_storage.read_recipe_data()
