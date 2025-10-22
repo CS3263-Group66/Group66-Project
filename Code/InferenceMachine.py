@@ -2,10 +2,24 @@
 from FoodAndRecipe import Fridge, Recipe
 from EvidenceBuilder import EvidenceBuilder
 from BNGenerator import BNGenerator
+from pgmpy.inference import VariableElimination
 
 class InferenceMachine:
     """
     Machines attempt to infer the success rate of a recipe.
     """
-    def __init__(self, fridge: Fridge, recipe: Recipe):
-        pass
+    @staticmethod
+    def infer(fridge, recipe):
+        if not fridge.can_cook(recipe):
+            return 0
+        food_xs = [fridge.extract_food(r) for r in recipe.requirements]
+        
+        SampleBN = BNGenerator.build_bn(recipe=recipe)
+        infer = VariableElimination(SampleBN)
+        
+        evidence = {}
+        
+        for f in food_xs:
+            evidence.update(EvidenceBuilder.build(f))
+            
+        return infer.query(["Feasibility"], evidence=evidence)

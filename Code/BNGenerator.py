@@ -2,7 +2,7 @@ from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from itertools import product
 from const import global_cpd_expired_values
-
+from FoodAndRecipe import Recipe
 
 class FoodCpdBuilder:
     def build_food_cpds(
@@ -125,3 +125,23 @@ class BNGenerator:
         # Validate BN
         bn.check_model()
         return bn
+
+if __name__ == "__main__":
+    class MockRecipe(Recipe):
+        def __init__(self):
+            self.requirements = ["Apple", "Banana"]
+            self.name = "mock"
+
+    bn_gen = BNGenerator()
+    recipe = MockRecipe()
+    bn = bn_gen.build_bn(recipe)
+
+    print("Nodes in BN:")
+    print(list(bn.nodes()))
+
+    print("\nEdges in BN:")
+    print(list(bn.edges()))
+
+    print("\nCPDs in BN:")
+    for cpd in bn.get_cpds():
+        print(cpd)
