@@ -1,5 +1,5 @@
-from BNGenerator import BNGenerator
-from FoodAndRecipe import Fridge, Recipe, RecipeBook
+from Generators.BNGenerator import BNGenerator
+from Models.FoodAndRecipe import Fridge, Recipe, RecipeBook
 from pgmpy.inference import VariableElimination
 
 # This class manages all AI related stuff, including models, utility functions, etc.
@@ -26,7 +26,7 @@ class RecipeAI:
         for recipe in recipebook.recipes:
             curr_model = self.model_generator.build_bn(recipe)
             inf = VariableElimination(curr_model)
-            curr_success_prob = inf.query(["Success"], RecipeAI.evidence[recipe.name])
+            curr_success_prob = inf.query(["Feasibility"], RecipeAI.evidence[recipe.name])
             result.append({recipe.name: curr_success_prob.values.tolist()})
         return result
 

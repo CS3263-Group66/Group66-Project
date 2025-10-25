@@ -1,8 +1,8 @@
 from RecipeAI import RecipeAI
-from FoodAndRecipe import Fridge, Food, Recipe, RecipeBook
+from Models.FoodAndRecipe import Fridge, Food, Recipe, RecipeBook
 from DataStorage import Data_Storage
 from Command import Command_Handler, QueryCommand
-from BNGenerator import BNGenerator
+from Generators.BNGenerator import BNGenerator
 
 class RecipeAIApp:
 
@@ -51,7 +51,7 @@ class RecipeAIApp:
 if __name__ == "__main__":
     print("loading model...")
     fridge = Fridge()
-    data_storage = Data_Storage("food_storage.json", "recipe_storage.json")
+    data_storage = Data_Storage("Data/food_storage.json", "Data/recipe_storage.json")
     recipebook: RecipeBook = data_storage.read_recipe_data()
     model_generator = BNGenerator()
     recipeAI = RecipeAI(model_generator, fridge, recipebook)

@@ -1,10 +1,9 @@
 from pgmpy.inference import VariableElimination
 
-from BNGenerator import BNGenerator
+from Generators.BNGenerator import BNGenerator
 from RecipeAI import RecipeAI
-from FoodAndRecipe import Food, Fridge, FoodType, StorageType
+from Models.FoodAndRecipe import Food, Fridge, FoodType, StorageType
 from DataStorage import Data_Storage
-from SampleFoodBN import SampleFoodBN
 
 class Command:
     def __init__(self):

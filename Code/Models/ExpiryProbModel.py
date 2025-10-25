@@ -25,7 +25,7 @@ class ExpiryProbModel:
         )
 
         # 1. Load the dataset
-        df = pd.read_csv("food_condition.csv")
+        df = pd.read_csv("Data/food_condition.csv")
 
         # 2. Define mapping to ensure consistent ordering with enums
         food_order = ["CANNED", "VEG_OR_FRUIT", "MEAT"]

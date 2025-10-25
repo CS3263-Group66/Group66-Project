@@ -1,4 +1,4 @@
-from FoodAndRecipe import Food
+from Code.Models.FoodAndRecipe import Food
 
 
 # This is for week 9 task 1 -- building evidence from food

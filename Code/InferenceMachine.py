@@ -1,7 +1,7 @@
 # This is week 9 task 2 -- build a process of referencing
-from FoodAndRecipe import Fridge, Recipe
-from EvidenceBuilder import EvidenceBuilder
-from BNGenerator import BNGenerator
+from Models.FoodAndRecipe import Fridge, Recipe
+from Generators.EvidenceBuilder import EvidenceBuilder
+from Generators.BNGenerator import BNGenerator
 from pgmpy.inference import VariableElimination
 
 class InferenceMachine:

@@ -1,8 +1,8 @@
 from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from itertools import product
-from FoodAndRecipe import Recipe
-from ExpiryProbModel import ExpiryProbModel
+from Models.FoodAndRecipe import Recipe
+from Models.ExpiryProbModel import ExpiryProbModel
 
 class FoodCpdBuilder:
     def build_food_cpds(self, food_name):
