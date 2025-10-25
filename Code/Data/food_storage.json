@@ -8,7 +8,7 @@
     {
         "name": "apple",
         "food_type": "VEG_OR_FRUIT",
-        "date_in_fridge": "2",
+        "date_in_fridge": "999",
         "storage_type": "REFRIGERATE"
     }
 ]

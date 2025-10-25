@@ -1,24 +1,20 @@
 from Generators.BNGenerator import BNGenerator
+from Generators.EvidenceBuilder import EvidenceBuilder
 from Models.FoodAndRecipe import Fridge, Recipe, RecipeBook
 from pgmpy.inference import VariableElimination
 
 # This class manages all AI related stuff, including models, utility functions, etc.
 # This class is created to separate the RecipeAIApp away from handling AI side logics.
 class RecipeAI:
-    evidence = {
-        "Apple Salad":{
-            "Food Type apple": 2,
-            "Days In Fridge apple": 2,
-        }, 
-        "Banana Salad": {
-            "Food Type banana": 1,
-            "Days In Fridge banana": 2
-        }
-    }
+    
     def __init__(self, model_generator: BNGenerator, fridge: Fridge, recipebook: RecipeBook):
         self.model_generator = model_generator
         self.fridge = fridge
         self.recipebook = recipebook
+        self.evidence = {}
+        for recipe in recipebook.recipes:
+            self.evidence = self.evidence | EvidenceBuilder.build_recipe(fridge, recipe)
+        print(self.evidence)
 
     # Create a Discrete BN for each recipe in recipebook, calculate the success probability for each recipe
     def query_recipe_success_prob(self, recipebook: RecipeBook):
@@ -26,7 +22,7 @@ class RecipeAI:
         for recipe in recipebook.recipes:
             curr_model = self.model_generator.build_bn(recipe)
             inf = VariableElimination(curr_model)
-            curr_success_prob = inf.query(["Feasibility"], RecipeAI.evidence[recipe.name])
+            curr_success_prob = inf.query(["Feasibility"], self.evidence[recipe.name])
             result.append({recipe.name: curr_success_prob.values.tolist()})
         return result
 

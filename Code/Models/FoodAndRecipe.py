@@ -40,7 +40,7 @@ class Food:
         return cls(
             name=data["name"],
             food_type=FoodType[data["food_type"]],          # use bracket notation to convert string to Enum
-            date_in_fridge=data["date_in_fridge"],
+            date_in_fridge=int(data["date_in_fridge"]),
             storage_type=StorageType[data["storage_type"]]
         )
 
@@ -49,15 +49,15 @@ class Food:
 # Fridge stores food items
 # It can check if it can cook a recipe based on available and not expired food.
 class Fridge:
-    def __init__(self):
-        self.foods = []
+    def __init__(self, foods=[]):
+        self.foods = foods
 
     def add_food(self, food: Food):
         self.foods.append(food)
 
     def has_food(self, food_name: str) -> bool:
         for f in self.foods:
-            if f.name == food_name and not f.is_expired():
+            if f.name == food_name:
                 return True
         return False
 
@@ -69,7 +69,7 @@ class Fridge:
     
     def extract_food(self, food_name: str) -> Optional[Food]:
         for f in self.foods:
-            if f.name == food_name and not f.is_expired():
+            if f.name == food_name:
                 return f
         return None
 

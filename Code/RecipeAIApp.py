@@ -37,8 +37,7 @@ class RecipeAIApp:
         print("------------------")
 
     def start(self):
-        food_data = self.data_storage.read_food_data()
-        self.fridge.foods = food_data
+
         RecipeAIApp.print_instruction_guide()
         while True:
             command: str = input()
@@ -50,12 +49,13 @@ class RecipeAIApp:
             
 if __name__ == "__main__":
     print("loading model...")
-    fridge = Fridge()
+    
     data_storage = Data_Storage("Data/food_storage.json", "Data/recipe_storage.json")
     recipebook: RecipeBook = data_storage.read_recipe_data()
+    fridge = Fridge(data_storage.read_food_data())
+    print(fridge.foods)
     model_generator = BNGenerator()
     recipeAI = RecipeAI(model_generator, fridge, recipebook)
     command_handler = Command_Handler(fridge, data_storage, recipeAI)
-
     app = RecipeAIApp(fridge, data_storage, command_handler, recipeAI)
     app.start()
