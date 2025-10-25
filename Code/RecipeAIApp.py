@@ -2,7 +2,6 @@ from RecipeAI import RecipeAI
 from FoodAndRecipe import Fridge, Food, Recipe, RecipeBook
 from DataStorage import Data_Storage
 from Command import Command_Handler, QueryCommand
-from SampleFoodBN import SampleFoodBN
 from BNGenerator import BNGenerator
 
 class RecipeAIApp:

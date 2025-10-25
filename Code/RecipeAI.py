@@ -32,7 +32,7 @@ class RecipeAI:
 
     def Utility(self, recipe: Recipe, prob: list[float]):
         success_prob = prob[1]
-        num_of_avail_food = 0;
+        num_of_avail_food = 0
         for food in recipe.requirements:
             for stored_food in self.fridge.foods:
                 if stored_food.name == food:
