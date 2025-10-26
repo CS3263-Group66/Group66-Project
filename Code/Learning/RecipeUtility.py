@@ -1,0 +1,2 @@
+class RecipeUtility:
+    pass
