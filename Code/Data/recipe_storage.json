@@ -5,14 +5,72 @@
             "requirements": [
                 "apple",
                 "egg"
-            ]
+            ],
+            "detail" : {
+                        "tag_easy": 0,
+                        "tag_15-minutes-or-less": 0,
+                        "tag_30-minutes-or-less": 1,
+                        "tag_60-minutes-or-less": 1,
+                        "tag_4-hours-or-less": 1,
+                        "tag_3-steps-or-less": 1,
+                        "tag_healthy": 1,
+                        "tag_low-sodium": 1,
+                        "tag_low-carb": 0,
+                        "tag_low-in-something": 1,
+                        "tag_main-dish": 0,
+                        "tag_desserts": 1,
+                        "tag_vegetables": 0,
+                        "tag_meat": 0,
+                        "tag_preparation": 1,
+                        "tag_time-to-make": 1,
+                        "tag_number-of-servings": 0,
+                        "tag_equipment": 0,
+                        "tag_cuisine": 1,
+                        "tag_north-american": 1,
+                        "tag_occasion": 0,
+                        "tag_taste-mood": 1,
+                        "tag_main-ingredient": 0,
+                        "tag_dietary": 1,
+                        "tag_course": 1,
+                        "step_cnt": 0.0593,
+                        "ingredients_cnt": 0.0073
+                        }
         },
         {
             "name": "Banana Salad",
             "requirements": [
                 "banana",
                 "egg"
-            ]
+            ],
+            "detail" : {
+                        "tag_easy": 1,
+                        "tag_15-minutes-or-less": 1,
+                        "tag_30-minutes-or-less": 0,
+                        "tag_60-minutes-or-less": 1,
+                        "tag_4-hours-or-less": 1,
+                        "tag_3-steps-or-less": 1,
+                        "tag_healthy": 1,
+                        "tag_low-sodium": 1,
+                        "tag_low-carb": 0,
+                        "tag_low-in-something": 0,
+                        "tag_main-dish": 0,
+                        "tag_desserts": 1,
+                        "tag_vegetables": 1,
+                        "tag_meat": 0,
+                        "tag_preparation": 1,
+                        "tag_time-to-make": 1,
+                        "tag_number-of-servings": 1,
+                        "tag_equipment": 1,
+                        "tag_cuisine": 1,
+                        "tag_north-american": 1,
+                        "tag_occasion": 1,
+                        "tag_taste-mood": 1,
+                        "tag_main-ingredient": 1,
+                        "tag_dietary": 0,
+                        "tag_course": 0,
+                        "step_cnt": 0.2413,
+                        "ingredients_cnt": 0.5637
+                        }
         }
     ]
 }

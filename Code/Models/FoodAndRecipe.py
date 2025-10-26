@@ -1,5 +1,7 @@
 from enum import Enum
 from typing import Optional
+import random
+
 class FoodType(Enum):
     CANNED = 1
     VEG_OR_FRUIT = 2
@@ -10,6 +12,8 @@ class StorageType(Enum):
     REFRIGERATE = 1
     FROZEN = 2
     NORMAL_TEMP = 3
+
+
 
 
 # --- Food class ---
@@ -75,14 +79,67 @@ class Fridge:
 
 # Recipe has a name and a list of required food names.
 class Recipe:
-    def __init__(self, name: str, requirements: list[str]):
+    columns = [
+    'tag_easy',
+    'tag_15-minutes-or-less',
+    'tag_30-minutes-or-less',
+    'tag_60-minutes-or-less',
+    'tag_4-hours-or-less',
+    'tag_3-steps-or-less',
+    'tag_healthy',
+    'tag_low-sodium',
+    'tag_low-carb',
+    'tag_low-in-something',
+    'tag_main-dish',
+    'tag_desserts',
+    'tag_vegetables',
+    'tag_meat',
+    'tag_preparation',
+    'tag_time-to-make',
+    'tag_number-of-servings',
+    'tag_equipment',
+    'tag_cuisine',
+    'tag_north-american',
+    'tag_occasion',
+    'tag_taste-mood',
+    'tag_main-ingredient',
+    'tag_dietary',
+    'tag_course',
+    'step_cnt',
+    'ingredients_cnt'
+    ]
+
+    @classmethod
+    def generate_one(cls):
+        """Generate a single random tag dictionary."""
+        data = {}
+        for col in cls.columns:
+            if col in ['step_cnt', 'ingredients_cnt']:
+                data[col] = round(random.random(), 4)
+            else:
+                data[col] = random.randint(0, 1)
+        return data
+
+    @classmethod
+    def generate_batch(cls, n):
+        """Generate a list of n random tag dictionaries."""
+        return [cls.generate_one() for _ in range(n)]
+    
+
+    def __init__(self, name: str, requirements: list[str], detail=None):
         self.name = name
         self.requirements = requirements
+        if detail is None or len(detail) == 0:
+            self.detail = Recipe.generate_one()
+        else:
+            self.detail = detail
 
+    
     def to_dict(self):
         return {
             "name": self.name,
-            "requirements": self.requirements
+            "requirements": self.requirements,
+            "detail": self.detail
         }
 
     def __repr__(self):

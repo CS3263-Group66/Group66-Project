@@ -48,7 +48,7 @@ class Data_Storage:
             data = json.load(f)
 
         for recipe_data in data["recipes"]:
-            recipe = Recipe(recipe_data["name"], recipe_data["requirements"])
+            recipe = Recipe(recipe_data["name"], recipe_data["requirements"], recipe_data["detail"])
             recipes.append(recipe)
         
         return RecipeBook(recipes)
