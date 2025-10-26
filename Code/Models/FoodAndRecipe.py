@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Optional
 import random
+import numpy as np
 
 class FoodType(Enum):
     CANNED = 1
@@ -111,20 +112,14 @@ class Recipe:
 
     @classmethod
     def generate_one(cls):
-        """Generate a single random tag dictionary."""
-        data = {}
+        """Generate a single random tag as a NumPy array."""
+        values = []
         for col in cls.columns:
             if col in ['step_cnt', 'ingredients_cnt']:
-                data[col] = round(random.random(), 4)
+                values.append(round(random.random(), 4))
             else:
-                data[col] = random.randint(0, 1)
-        return data
-
-    @classmethod
-    def generate_batch(cls, n):
-        """Generate a list of n random tag dictionaries."""
-        return [cls.generate_one() for _ in range(n)]
-    
+                values.append(random.randint(0, 1))
+        return np.array(values, dtype=float)
 
     def __init__(self, name: str, requirements: list[str], detail=None):
         self.name = name

@@ -2,15 +2,17 @@ from Generators.BNGenerator import BNGenerator
 from Generators.EvidenceBuilder import EvidenceBuilder
 from Models.FoodAndRecipe import Fridge, Recipe, RecipeBook
 from pgmpy.inference import VariableElimination
+from Learning.RecipeUtility import RecipeUtility
 
 # This class manages all AI related stuff, including models, utility functions, etc.
 # This class is created to separate the RecipeAIApp away from handling AI side logics.
 class RecipeAI:
     
-    def __init__(self, model_generator: BNGenerator, fridge: Fridge, recipebook: RecipeBook):
+    def __init__(self, model_generator: BNGenerator, fridge: Fridge, recipebook: RecipeBook, recipeutility: RecipeUtility):
         self.model_generator = model_generator
         self.fridge = fridge
         self.recipebook = recipebook
+        self.recipeutility = recipeutility
         self.evidence = {}
         for recipe in recipebook.recipes:
             self.evidence = self.evidence | EvidenceBuilder.build_recipe(fridge, recipe)
@@ -33,4 +35,8 @@ class RecipeAI:
             for stored_food in self.fridge.foods:
                 if stored_food.name == food:
                     num_of_avail_food += 1
+        score = self.recipeutility.get_utility_score(recipe)
+        print("-------------------Test!!!-------------------")
+        print(score)
+        print("-----------------Test END !!!-----------------")
         return (num_of_avail_food/len(recipe.requirements)) * success_prob

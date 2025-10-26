@@ -46,6 +46,16 @@ class QueryCommand(Command):
     def execute(self):
         recipebook = self.data_storage.read_recipe_data()
         print(self.model.query_recipe_success_prob(recipebook))
+
+class UtilityCommand(Command):
+    def __init__(self, data_storage: Data_Storage, model: RecipeAI):
+        self.model = model
+        self.data_storage = data_storage
+    
+    def execute(self):
+        recipebook = self.data_storage.read_recipe_data()
+        for reci in recipebook.recipes:
+            print(self.model.Utility(reci, [0,5,0,5]))
         
         
 
@@ -72,6 +82,8 @@ class Command_Handler:
             case "query":
                 query_args = raw_command[len("query "):].split()
                 return QueryCommand(query_args, self.data_storage, self.model)
+            case "utility":
+                return UtilityCommand(self.data_storage, self.model)
             case _:
                 print("Invalid command")
                 return None

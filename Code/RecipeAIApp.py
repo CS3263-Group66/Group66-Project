@@ -3,6 +3,7 @@ from Models.FoodAndRecipe import Fridge, Food, Recipe, RecipeBook
 from DataStorage import Data_Storage
 from Command import Command_Handler, QueryCommand
 from Generators.BNGenerator import BNGenerator
+from Learning.RecipeUtility import RecipeUtility
 
 class RecipeAIApp:
 
@@ -55,7 +56,8 @@ if __name__ == "__main__":
     fridge = Fridge(data_storage.read_food_data())
     print(fridge.foods)
     model_generator = BNGenerator()
-    recipeAI = RecipeAI(model_generator, fridge, recipebook)
+    recipe_utility = RecipeUtility()
+    recipeAI = RecipeAI(model_generator, fridge, recipebook, recipe_utility)
     command_handler = Command_Handler(fridge, data_storage, recipeAI)
     app = RecipeAIApp(fridge, data_storage, command_handler, recipeAI)
     app.start()
