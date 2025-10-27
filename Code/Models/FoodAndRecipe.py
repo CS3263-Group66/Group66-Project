@@ -152,6 +152,12 @@ class RecipeBook:
             "recipes": [recipe.to_dict() for recipe in self.recipes]
         }
     
+    # get the recipe from the list of recipes by given recipe name
+    def get_recipe(self, recipe_name: str) -> Recipe:
+        for recipe in self.recipes:
+            if recipe.name == recipe_name:
+                return recipe
+    
     def __repr__(self):
         recipe_lines = "\n".join(repr(recipe) for recipe in self.recipes)
         return f"RecipeBook:\n{recipe_lines}"

@@ -3,6 +3,7 @@ from Generators.EvidenceBuilder import EvidenceBuilder
 from Models.FoodAndRecipe import Fridge, Recipe, RecipeBook
 from pgmpy.inference import VariableElimination
 from Learning.RecipeUtility import RecipeUtility
+from InferenceMachine import InferenceMachine
 
 # This class manages all AI related stuff, including models, utility functions, etc.
 # This class is created to separate the RecipeAIApp away from handling AI side logics.
@@ -24,7 +25,7 @@ class RecipeAI:
         for recipe in recipebook.recipes:
             curr_model = self.model_generator.build_bn(recipe)
             inf = VariableElimination(curr_model)
-            curr_success_prob = inf.query(["Feasibility"], self.evidence[recipe.name])
+            curr_success_prob = InferenceMachine.infer(self.fridge, recipe)
             result.append({recipe.name: curr_success_prob.values.tolist()})
         return result
 
@@ -37,6 +38,6 @@ class RecipeAI:
                     num_of_avail_food += 1
         score = self.recipeutility.get_utility_score(recipe)
         print("-------------------Test!!!-------------------")
-        print(score)
+        print(f"{recipe.name}: {score}")
         print("-----------------Test END !!!-----------------")
-        return (num_of_avail_food/len(recipe.requirements)) * success_prob
+        return (num_of_avail_food/len(recipe.requirements)) * success_prob, score

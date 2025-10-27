@@ -44,8 +44,24 @@ class QueryCommand(Command):
         self.data_storage = data_storage
     
     def execute(self):
+        highest_utility = 0
+        recommendation = None
         recipebook = self.data_storage.read_recipe_data()
-        print(self.model.query_recipe_success_prob(recipebook))
+        feasibilities = self.model.query_recipe_success_prob(recipebook)
+        for recipe_prob in feasibilities:
+            for name, prob in recipe_prob.items():
+                print("Success Probabilities:")
+                print(f"{name}: {prob}")
+                recipe = recipebook.get_recipe(name)
+                print("Utility:")
+                simple_utility, ml_utility = self.model.Utility(recipe, prob)
+                print(ml_utility)
+                if ml_utility > highest_utility:
+                    highest_utility = ml_utility
+                    recommendation = recipe
+                print(f"simple util: {simple_utility}")
+        print(f"recommendation: {recommendation}")
+            
 
 class UtilityCommand(Command):
     def __init__(self, data_storage: Data_Storage, model: RecipeAI):
@@ -55,7 +71,7 @@ class UtilityCommand(Command):
     def execute(self):
         recipebook = self.data_storage.read_recipe_data()
         for reci in recipebook.recipes:
-            print(self.model.Utility(reci, [0,5,0,5]))
+            self.model.Utility(reci, [0,5,0,5])
         
         
 
