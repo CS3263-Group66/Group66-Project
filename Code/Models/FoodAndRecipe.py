@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Optional
 import random
 import numpy as np
+from numpy.typing import NDArray
 
 class FoodType(Enum):
     CANNED = 1
@@ -121,20 +122,20 @@ class Recipe:
                 values.append(random.randint(0, 1))
         return np.array(values, dtype=float)
 
-    def __init__(self, name: str, requirements: list[str], detail=None):
+    def __init__(self, name: str, requirements: list[str], detail: NDArray=None):
         self.name = name
         self.requirements = requirements
         if detail is None or len(detail) == 0:
-            self.detail = Recipe.generate_one()
+            self.detail: NDArray = Recipe.generate_one()
         else:
-            self.detail = detail
+            self.detail: NDArray = np.asarray(detail, dtype=float)
 
     
     def to_dict(self):
         return {
             "name": self.name,
             "requirements": self.requirements,
-            "detail": self.detail
+            "detail": self.detail.reshape(1, -1).tolist()
         }
 
     def __repr__(self):
@@ -158,6 +159,7 @@ class RecipeBook:
             if recipe.name == recipe_name:
                 return recipe
     
+
     def __repr__(self):
         recipe_lines = "\n".join(repr(recipe) for recipe in self.recipes)
         return f"RecipeBook:\n{recipe_lines}"

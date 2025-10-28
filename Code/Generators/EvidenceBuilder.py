@@ -25,11 +25,11 @@ class EvidenceBuilder:
     
     @staticmethod
     def _extract_ft_cat(food: Food):
-        return food.food_type.value
+        return food.food_type.value - 1
 
     @staticmethod
     def _extract_st_cat(food: Food):
-        return food.storage_type.value
+        return food.storage_type.value - 1
 
     @staticmethod
     def _extract_df_cat(food: Food):

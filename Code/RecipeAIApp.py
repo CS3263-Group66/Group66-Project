@@ -11,9 +11,12 @@ class RecipeAIApp:
     # Update this field when new commands are added
     COMMAND_LIST = {
         "Add": "Add a new food item into the fridge",
+        "AddRecipe": "Add a new recipe into the recipe book",
         "List": "List the food items in the fridge",
+        "ListRecipe": "List the recipes in the recipe book",
         "Remove x": "Remove food of index x as shown in the `List` from the fridge, x is required",
         "Query": "Query for the recommended recipe (currently only return probability of success for each recipe)"
+        ""
     }
 
     # initialises the AI with SampleFoodBN model, update this field accordingly with the main model communicating with the user.
@@ -58,6 +61,6 @@ if __name__ == "__main__":
     model_generator = BNGenerator()
     recipe_utility = RecipeUtility()
     recipeAI = RecipeAI(model_generator, fridge, recipebook, recipe_utility)
-    command_handler = Command_Handler(fridge, data_storage, recipeAI)
+    command_handler = Command_Handler(fridge, recipebook, data_storage, recipeAI)
     app = RecipeAIApp(fridge, data_storage, command_handler, recipeAI)
     app.start()
