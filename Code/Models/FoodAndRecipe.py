@@ -1,5 +1,9 @@
 from enum import Enum
 from typing import Optional
+import random
+import numpy as np
+from numpy.typing import NDArray
+
 class FoodType(Enum):
     CANNED = 1
     VEG_OR_FRUIT = 2
@@ -10,6 +14,8 @@ class StorageType(Enum):
     REFRIGERATE = 1
     FROZEN = 2
     NORMAL_TEMP = 3
+
+
 
 
 # --- Food class ---
@@ -40,7 +46,7 @@ class Food:
         return cls(
             name=data["name"],
             food_type=FoodType[data["food_type"]],          # use bracket notation to convert string to Enum
-            date_in_fridge=data["date_in_fridge"],
+            date_in_fridge=int(data["date_in_fridge"]),
             storage_type=StorageType[data["storage_type"]]
         )
 
@@ -49,15 +55,15 @@ class Food:
 # Fridge stores food items
 # It can check if it can cook a recipe based on available and not expired food.
 class Fridge:
-    def __init__(self):
-        self.foods = []
+    def __init__(self, foods=[]):
+        self.foods = foods
 
     def add_food(self, food: Food):
         self.foods.append(food)
 
     def has_food(self, food_name: str) -> bool:
         for f in self.foods:
-            if f.name == food_name and not f.is_expired():
+            if f.name == food_name:
                 return True
         return False
 
@@ -69,20 +75,67 @@ class Fridge:
     
     def extract_food(self, food_name: str) -> Optional[Food]:
         for f in self.foods:
-            if f.name == food_name and not f.is_expired():
+            if f.name == food_name:
                 return f
         return None
 
 # Recipe has a name and a list of required food names.
 class Recipe:
-    def __init__(self, name: str, requirements: list[str]):
+    columns = [
+    'tag_easy',
+    'tag_15-minutes-or-less',
+    'tag_30-minutes-or-less',
+    'tag_60-minutes-or-less',
+    'tag_4-hours-or-less',
+    'tag_3-steps-or-less',
+    'tag_healthy',
+    'tag_low-sodium',
+    'tag_low-carb',
+    'tag_low-in-something',
+    'tag_main-dish',
+    'tag_desserts',
+    'tag_vegetables',
+    'tag_meat',
+    'tag_preparation',
+    'tag_time-to-make',
+    'tag_number-of-servings',
+    'tag_equipment',
+    'tag_cuisine',
+    'tag_north-american',
+    'tag_occasion',
+    'tag_taste-mood',
+    'tag_main-ingredient',
+    'tag_dietary',
+    'tag_course',
+    'step_cnt',
+    'ingredients_cnt'
+    ]
+
+    @classmethod
+    def generate_one(cls):
+        """Generate a single random tag as a NumPy array."""
+        values = []
+        for col in cls.columns:
+            if col in ['step_cnt', 'ingredients_cnt']:
+                values.append(round(random.random(), 4))
+            else:
+                values.append(random.randint(0, 1))
+        return np.array(values, dtype=float)
+
+    def __init__(self, name: str, requirements: list[str], detail: NDArray=None):
         self.name = name
         self.requirements = requirements
+        if detail is None or len(detail) == 0:
+            self.detail: NDArray = Recipe.generate_one()
+        else:
+            self.detail: NDArray = np.asarray(detail, dtype=float)
 
+    
     def to_dict(self):
         return {
             "name": self.name,
-            "requirements": self.requirements
+            "requirements": self.requirements,
+            "detail": self.detail.reshape(1, -1).tolist()
         }
 
     def __repr__(self):
@@ -100,6 +153,13 @@ class RecipeBook:
             "recipes": [recipe.to_dict() for recipe in self.recipes]
         }
     
+    # get the recipe from the list of recipes by given recipe name
+    def get_recipe(self, recipe_name: str) -> Recipe:
+        for recipe in self.recipes:
+            if recipe.name == recipe_name:
+                return recipe
+    
+
     def __repr__(self):
         recipe_lines = "\n".join(repr(recipe) for recipe in self.recipes)
         return f"RecipeBook:\n{recipe_lines}"

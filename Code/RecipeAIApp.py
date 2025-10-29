@@ -1,9 +1,9 @@
 from RecipeAI import RecipeAI
-from FoodAndRecipe import Fridge, Food, Recipe, RecipeBook
+from Models.FoodAndRecipe import Fridge, Food, Recipe, RecipeBook
 from DataStorage import Data_Storage
 from Command import Command_Handler, QueryCommand
-from SampleFoodBN import SampleFoodBN
-from BNGenerator import BNGenerator
+from Generators.BNGenerator import BNGenerator
+from Learning.RecipeUtility import RecipeUtility
 
 class RecipeAIApp:
 
@@ -11,9 +11,12 @@ class RecipeAIApp:
     # Update this field when new commands are added
     COMMAND_LIST = {
         "Add": "Add a new food item into the fridge",
+        "AddRecipe": "Add a new recipe into the recipe book",
         "List": "List the food items in the fridge",
+        "ListRecipe": "List the recipes in the recipe book",
         "Remove x": "Remove food of index x as shown in the `List` from the fridge, x is required",
         "Query": "Query for the recommended recipe (currently only return probability of success for each recipe)"
+        ""
     }
 
     # initialises the AI with SampleFoodBN model, update this field accordingly with the main model communicating with the user.
@@ -38,8 +41,7 @@ class RecipeAIApp:
         print("------------------")
 
     def start(self):
-        food_data = self.data_storage.read_food_data()
-        self.fridge.foods = food_data
+
         RecipeAIApp.print_instruction_guide()
         while True:
             command: str = input()
@@ -51,12 +53,14 @@ class RecipeAIApp:
             
 if __name__ == "__main__":
     print("loading model...")
-    fridge = Fridge()
-    data_storage = Data_Storage("food_storage.json", "recipe_storage.json")
+    
+    data_storage = Data_Storage("Data/food_storage.json", "Data/recipe_storage.json")
     recipebook: RecipeBook = data_storage.read_recipe_data()
+    fridge = Fridge(data_storage.read_food_data())
+    print(fridge.foods)
     model_generator = BNGenerator()
-    recipeAI = RecipeAI(model_generator, fridge, recipebook)
-    command_handler = Command_Handler(fridge, data_storage, recipeAI)
-
+    recipe_utility = RecipeUtility()
+    recipeAI = RecipeAI(model_generator, fridge, recipebook, recipe_utility)
+    command_handler = Command_Handler(fridge, recipebook, data_storage, recipeAI)
     app = RecipeAIApp(fridge, data_storage, command_handler, recipeAI)
     app.start()

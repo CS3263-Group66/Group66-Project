@@ -1,51 +1,19 @@
 from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from itertools import product
-from const import global_cpd_expired_values
-from FoodAndRecipe import Recipe
+from Models.FoodAndRecipe import Recipe
+from Models.ExpiryProbModel import ExpiryProbModel
 
 class FoodCpdBuilder:
-    def build_food_cpds(
-        self, food_name, global_cpd_expired_values=global_cpd_expired_values
-    ):
-        # Define CPDs for root nodes
-        ft_cpd = TabularCPD(
-            variable=f"Food Type {food_name}",
-            variable_card=3,
-            values=[[1 / 3], [1 / 3], [1 / 3]],
-        )
-        st_cpd = TabularCPD(
-            variable=f"Storage Type {food_name}",
-            variable_card=3,
-            values=[[1 / 3], [1 / 3], [1 / 3]],
-        )
-        df_cpd = TabularCPD(
-            variable=f"Days In Fridge {food_name}",
-            variable_card=3,
-            values=[[1 / 3], [1 / 3], [1 / 3]],
-        )
+    def build_food_cpds(self, food_name):
+        expiry_model = ExpiryProbModel(food_name)
 
-        # CPD for expired food depends on root nodes
-        cpd_expired = TabularCPD(
-            variable=f"Expired {food_name}",
-            variable_card=3,
-            values=global_cpd_expired_values,
-            evidence=[
-                f"Food Type {food_name}",
-                f"Storage Type {food_name}",
-                f"Days In Fridge {food_name}",
-            ],
-            evidence_card=[3, 3, 3],
-        )
-
-        # Return all CPDs for this food
-        return [ft_cpd, st_cpd, df_cpd, cpd_expired]
+        return expiry_model.cpds
 
 
 class BNGenerator:
-    def __init__(self, global_cpd_expired_values=global_cpd_expired_values):
+    def __init__(self):
         self.food_cpd_builder = FoodCpdBuilder()
-        self.global_cpd_expired_values = global_cpd_expired_values
 
     def build_bn(self, recipe):
         cpds = []
@@ -56,9 +24,7 @@ class BNGenerator:
 
         # --- Build CPDs and dependencies for each food ---
         for food_name in recipe.requirements:
-            food_cpds = self.food_cpd_builder.build_food_cpds(
-                food_name, self.global_cpd_expired_values
-            )
+            food_cpds = self.food_cpd_builder.build_food_cpds(food_name)
             cpds.extend(food_cpds)
 
             # Add nodes
@@ -75,8 +41,6 @@ class BNGenerator:
 
         # Add feasibility node and edges to Success
         nodes.add("Feasibility")
-        # nodes.add("Success")
-        # edges.append(("Feasibility", "Success"))
 
         # --- Feasibility CPD (Noisy-OR style) ---
         num_foods = len(feasibility_evidence)
@@ -99,17 +63,6 @@ class BNGenerator:
             evidence_card=[3] * num_foods,
         )
         cpds.append(feasibility_cpd)
-
-        # # --- Success CPD ---
-        # success_cpd = TabularCPD(
-        #     variable="Success",
-        #     variable_card=2,
-        #     values=[[0.9, 0.05], [0.1, 0.95]],
-        #     evidence=["Feasibility"],
-        #     evidence_card=[2],
-        # )
-        # cpds.append(success_cpd)
-
         # --- Build BN ---
         bn = DiscreteBayesianNetwork(edges)
 

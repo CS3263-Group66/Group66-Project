@@ -45,4 +45,5 @@ dist/
 # Misc
 *.swp
 *.bak
+*.csv
 *.tmp
