@@ -41,3 +41,10 @@ class RecipeAI:
         print(f"{recipe.name}: {score}")
         print("-----------------Test END !!!-----------------")
         return (num_of_avail_food/len(recipe.requirements)) * success_prob, score
+    
+    def expected_utility(self, recipe: Recipe, prob: list[float]) -> float:
+        _, ml_utility = self.Utility(recipe, prob)
+        success_prob = prob[1]
+        expected_utility = success_prob * ml_utility
+        print(f"expected utility of {recipe.name}: {expected_utility}")
+        return expected_utility

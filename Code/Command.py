@@ -108,12 +108,10 @@ class QueryCommand(Command):
                 print(f"{name}: {prob}")
                 recipe = recipebook.get_recipe(name)
                 print("Utility:")
-                simple_utility, ml_utility = self.model.Utility(recipe, prob)
-                print(ml_utility)
+                ml_utility = self.model.expected_utility(recipe, prob)
                 if ml_utility > highest_utility:
                     highest_utility = ml_utility
                     recommendation = recipe
-                print(f"simple util: {simple_utility}")
         print(f"recommendation: {recommendation}")
             
 
