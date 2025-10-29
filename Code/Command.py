@@ -146,8 +146,9 @@ class Command_Handler:
                     print("Missing food item index to be removed")
                 food_index = int(splitted_command[1])
                 return RemoveFoodCommand(self.fridge, food_index, self.data_storage)
-            case "addrecipe":
-                return AddRecipeCommand(self.recipebook, self.data_storage)
+            # Adding of recipe is currently not supported
+            # case "addrecipe":
+            #     return AddRecipeCommand(self.recipebook, self.data_storage)
             case "query":
                 query_args = raw_command[len("query "):].split()
                 return QueryCommand(query_args, self.data_storage, self.model)
