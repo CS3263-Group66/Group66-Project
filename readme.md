@@ -1,74 +1,40 @@
-# Week 7 tasks
+# What is RecipeAI?
+RecipeAI is an AI tool that give recommendation of dishes based on the food available in your fridge. It recommends a recipe based on the availability and freshness of the ingredient.
 
-Tasks:
+# How to use RecipeAI
+## System Requirement
+- Python 3 installed
+- Git Bash or Linux system (including WSL)
+## Installation
+1. Download the RecipeAI by cloning the repo from [RecipeAI github repo](https://github.com/CS3263-Group66/Group66-Project)
+2. set up the python virtual environment by running the following code
+- for Windows users:\
+`source venv/Scripts/activate`
+- for Mac users:\
+`source venv/bin/activate`
+3. Navtigate into the `Code` folder\
+`cd Code`
+4. Start the application\
+`python RecipeAIApp.py`
 
-1. Build the framework using example in bn.ipynb
+## Data Storage
 
-2. Task division:
-   - Build the Freshness Item Node
-   - Build a framework for constructing BN for recipe
-   - Build a query API
+RecipeAI stores data locally:
+- **Foods:** `food_storage.json`
+- **Recipes:** `recipe_storage.json`
 
-# Week 9 tasks
+> ⚠️ Do not **tamper** with these files unless you are certain they remain in the correct format. Incorrect edits can corrupt your data or break the app.
 
-1. Assume all food items present -> Change the inference structure => can generate BN, NEED a way to collect evidence: 
+## Available instructions
+A list of available instructions is listed below. These instructions will also be displayed everytime you open the app.
 
-Keys for evidence:
-f"Food Type {food_name}",
-f"Storage Type {food_name}",
-f"Days In Fridge {food_name}",
+| Feature                                         | Command                                         | Details                                                                                                                                                          |
+|:------------------------------------------------|:------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Add Food                                        | `Add`, then follow the instructions accordingly | Add a food to the fridge. Specification of the food will be selected in the follow up questions.                                                                 |
+| List all the food in the fridge                 | `List`                                          | List all the food that is currently stored in the `Fridge`, including details like food type, storage type and number of days in fridge.                         |
+| List all the recipe in the current `RecipeBook` | `ListRecipe`                                    | Provide the detail of the current `RecipeBook`, which includes all the `Recipes` stored. Currently, we do not support adding and editing of recipes.             |
+| Remove a food from storage                      | `Remove x`                                      | Remove food item with index `x` from the current fridge. Index of food items can be found using `List` command.                                                  |
+| Query the recommended recipe                    | `Query`                                         | Returns the most recommended dish stored in the `RecipeBook`, this is determined by availability, freshness and other aspect of the food stored in the `Fridge`. |
 
-For each food item in the recipe: construct key-val pair of evidence and supply to BN for querying
-
-2. If not all food items for a recipe is present -> Handle the case where food is not exists
-
-Possible that recipe contains food that not exists
-=> Soln: default CPD 
-Plan 1: add a column
-Plan 2: change create food_cpd => use default cpd
-Plan 3: alpha smoothing => a very small random probability
-TO ADD ON
-
-3. Learning - refer to assignment2
-
-Assume finite recipe
-
-3.1. For each recipe -> generate some samples
-3.2. uSE assn2 METHOD to adjust the CPT
-
-
-4. Utility
-
-4.1. More food that closed to expired are used in recipe -> higher preference
-4.2. Dish amount
-4.3  Personal preference
-
-5. Minor: add proper typing
-
-6. Modify the original bayesian network
-
-Some notes on learning:
-EM algorithm: https://www.geeksforgeeks.org/machine-learning/ml-expectation-maximization-algorithm/
-
-# Week 10 tasks
-1. utitlity and decision making
-- current U: fridge count * success_rate (sounds like expected)
-- Add more complex attributes:
-   - taste
-   - ammount
-   - expiry_cnt
-U(recipe) = f(recipe.taste, recipe.ammount, recipe.expiry_cnt) 
-
-- consider using ML in getting f 
-- How to train? use random generator to generate some data
-- Decision making process -> decision tree (see attachment)
-
-2. Integration and debug
-- make sure no bugs
-- can have some basic demo
-
-3. Framework of report
-- Decision network architecture
-- BN network architecture and corresponding learning
-- Utility function and corresponding learning
-- Responsible AI
+## Terminate RecipeAI
+Currently we do not have a particular command that stops the app. It is fine to terminate the app using keyboard interruption `Ctrl + C` or simply closing the terminal.
