@@ -17,7 +17,6 @@ class RecipeAI:
         self.evidence = {}
         for recipe in recipebook.recipes:
             self.evidence = self.evidence | EvidenceBuilder.build_recipe(fridge, recipe)
-        print(self.evidence)
 
     # Create a Discrete BN for each recipe in recipebook, calculate the success probability for each recipe
     def query_recipe_success_prob(self, recipebook: RecipeBook):

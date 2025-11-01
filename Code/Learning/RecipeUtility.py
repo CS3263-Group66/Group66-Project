@@ -8,7 +8,6 @@ class RecipeUtility:
 
     with open('Learning/utility_map.json', 'r') as f:
         utility_map = json.load(f)
-        print(utility_map)
     
     def __init__(self):
         pass
