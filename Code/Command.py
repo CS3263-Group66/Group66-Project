@@ -92,11 +92,12 @@ class ListRecipeCommand(Command):
               "\n".join((f"{index + 1}. {str(recipe)}") for index, recipe in enumerate(self.recipebook.recipes)))
         
 class QueryCommand(Command):
-    def __init__(self, query: list[str], data_storage: Data_Storage, model: RecipeAI):
+    def __init__(self, query: list[str], data_storage: Data_Storage, model: RecipeAI, fridge: Fridge):
         self.query = query
         self.model = model
         self.data_storage = data_storage
-    
+        self.fridge = fridge
+
     def execute(self):
         highest_utility = 0
         recommendation = None
@@ -108,7 +109,7 @@ class QueryCommand(Command):
                 print(f"{name}: {prob}")
                 recipe = recipebook.get_recipe(name)
                 print("Utility:")
-                ml_utility = self.model.expected_utility(recipe, prob)
+                ml_utility = self.model.expected_utility(recipe, prob, self.fridge)
                 if ml_utility > highest_utility:
                     highest_utility = ml_utility
                     recommendation = recipe
@@ -116,14 +117,16 @@ class QueryCommand(Command):
             
 
 class UtilityCommand(Command):
-    def __init__(self, data_storage: Data_Storage, model: RecipeAI):
+    def __init__(self, data_storage: Data_Storage, model: RecipeAI, fridge: Fridge):
         self.model = model
         self.data_storage = data_storage
+        self.fridge = fridge
     
     def execute(self):
         recipebook = self.data_storage.read_recipe_data()
+        feasibilities = self.model.query_recipe_success_prob(recipebook)
         for reci in recipebook.recipes:
-            self.model.Utility(reci, [0,5,0,5])
+            self.model.Utility(reci, [0.5,0.5], self.fridge)
         
 
 
@@ -150,9 +153,9 @@ class Command_Handler:
                 return AddRecipeCommand(self.recipebook, self.data_storage)
             case "query":
                 query_args = raw_command[len("query "):].split()
-                return QueryCommand(query_args, self.data_storage, self.model)
+                return QueryCommand(query_args, self.data_storage, self.model, self.fridge)
             case "utility":
-                return UtilityCommand(self.data_storage, self.model)
+                return UtilityCommand(self.data_storage, self.model, self.fridge)
             case "listrecipe":
                 return ListRecipeCommand(self.recipebook)
             case _:

@@ -16,8 +16,6 @@ class StorageType(Enum):
     NORMAL_TEMP = 3
 
 
-
-
 # --- Food class ---
 class Food:
     def __init__(self, name: str, food_type: FoodType, date_in_fridge: int, storage_type: StorageType):
@@ -78,6 +76,13 @@ class Fridge:
             if f.name == food_name:
                 return f
         return None
+    def get_expiry_score(self, foods: list[str]) -> float:
+        result = 0
+        for f_name in foods:
+            for f in self.foods:
+                if f.name == f_name:
+                    result += f.date_in_fridge / 10
+        return result
 
 # Recipe has a name and a list of required food names.
 class Recipe:
