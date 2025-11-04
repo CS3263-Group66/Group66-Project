@@ -28,21 +28,21 @@ class RecipeAI:
             result.append({recipe.name: curr_success_prob.values.tolist()})
         return result
 
-    def Utility(self, recipe: Recipe, prob: list[float]):
+    def Utility(self, recipe: Recipe, prob: list[float], f:Fridge):
         success_prob = prob[1]
         num_of_avail_food = 0
         for food in recipe.requirements:
             for stored_food in self.fridge.foods:
                 if stored_food.name == food:
                     num_of_avail_food += 1
-        score = self.recipeutility.get_utility_score(recipe)
+        score = self.recipeutility.get_utility_score(recipe, f)
         print("-------------------Test!!!-------------------")
         print(f"{recipe.name}: {score}")
         print("-----------------Test END !!!-----------------")
         return (num_of_avail_food/len(recipe.requirements)) * success_prob, score
     
-    def expected_utility(self, recipe: Recipe, prob: list[float]) -> float:
-        _, ml_utility = self.Utility(recipe, prob)
+    def expected_utility(self, recipe: Recipe, prob: list[float], f:Fridge) -> float:
+        _, ml_utility = self.Utility(recipe, prob, f)
         success_prob = prob[1]
         expected_utility = success_prob * ml_utility
         print(f"expected utility of {recipe.name}: {expected_utility}")
