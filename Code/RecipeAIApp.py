@@ -11,7 +11,7 @@ class RecipeAIApp:
     # Update this field when new commands are added
     COMMAND_LIST = {
         "Add": "Add a new food item into the fridge",
-        "AddRecipe": "Add a new recipe into the recipe book",
+        # "AddRecipe": "Add a new recipe into the recipe book",
         "List": "List the food items in the fridge",
         "ListRecipe": "List the recipes in the recipe book",
         "Remove x": "Remove food of index x as shown in the `List` from the fridge, x is required",
@@ -57,7 +57,6 @@ if __name__ == "__main__":
     data_storage = Data_Storage("Data/food_storage.json", "Data/recipe_storage.json")
     recipebook: RecipeBook = data_storage.read_recipe_data()
     fridge = Fridge(data_storage.read_food_data())
-    print(fridge.foods)
     model_generator = BNGenerator()
     recipe_utility = RecipeUtility()
     recipeAI = RecipeAI(model_generator, fridge, recipebook, recipe_utility)
