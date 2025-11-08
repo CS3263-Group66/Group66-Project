@@ -114,6 +114,7 @@ class QueryCommand(Command):
                     highest_utility = ml_utility
                     recommendation = recipe
         print(f"recommendation: {recommendation}")
+        print(f"\n!!!!! WARNING\nPlease ensure food items are in good condition for consumption before cooking!\n!!!!!")
             
 
 class UtilityCommand(Command):

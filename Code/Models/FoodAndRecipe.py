@@ -39,6 +39,22 @@ class Food:
             "storage_type": self.storage_type.name    # or .value
         }
     
+    def get_near_expiry_probability(self):
+        from Models.ExpiryProbModel import ExpiryProbModel
+        from Generators.EvidenceBuilder import EvidenceBuilder
+
+        model = ExpiryProbModel(self.name)
+        evidence = EvidenceBuilder.build_food(self)
+        food_expiry_prob = model.query(f"Expired {self.name}", evidence).values[1]
+        print(f"{self.name} expiry: {food_expiry_prob}")
+        return food_expiry_prob
+    
+    def __eq__(self, other):
+        """Check if two Food objects are equal (same item)"""
+        if not isinstance(other, Food):
+            return False
+        return self.__str__ == other.__str__
+    
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
@@ -76,13 +92,23 @@ class Fridge:
             if f.name == food_name:
                 return f
         return None
+    
     def get_expiry_score(self, foods: list[str]) -> float:
+
+        # 1st type of expiry_score, which is just counting the days in fridge.
+        # for f_name in foods:
+        #     for f in self.foods:
+        #         if f.name == f_name:
+        #             result += f.date_in_fridge / 10
+
+        # 2nd way to get expiry_score, which is summing up the near_expiry_probability of each ingredient.
         result = 0
-        for f_name in foods:
-            for f in self.foods:
-                if f.name == f_name:
-                    result += f.date_in_fridge / 10
-        return result
+        for food in foods:
+            for stored_food in self.foods:
+                if food == stored_food.name:
+                    result += stored_food.get_near_expiry_probability()
+        print(f"prob near expiry: {result}")
+        return result        
 
 # Recipe has a name and a list of required food names.
 class Recipe:

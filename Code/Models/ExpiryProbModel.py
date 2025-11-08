@@ -5,6 +5,9 @@ from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from pgmpy.inference import VariableElimination
 
+from Models.FoodAndRecipe import Food
+from Generators.EvidenceBuilder import EvidenceBuilder
+
 class ExpiryProbModel:
     def __init__(self, food_name: str):
         self.model = DiscreteBayesianNetwork(
@@ -67,4 +70,4 @@ class ExpiryProbModel:
     
     # query about the model. Evidence of type {variable: value}
     def query(self, variable: str, evidence = None):
-        return self.infer.query([variable], evidence)        
+        return self.infer.query([variable], evidence)
