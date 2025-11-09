@@ -1,12 +1,12 @@
-# What is RecipeAI?
-RecipeAI is an AI tool that give recommendation of dishes based on the food available in your fridge. It recommends a recipe based on the availability and freshness of the ingredient.
+# What is SmartFridge?
+SmartFridge is an AI tool that give recommendation of dishes based on the food available in your fridge. It recommends a recipe based on the availability and freshness of the ingredient.
 
-# How to use RecipeAI
+# How to use SmartFridge
 ## System Requirement
 - Python 3 installed
 - Git Bash or Linux system (including WSL)
 ## Installation
-1. Download the RecipeAI by cloning the repo from [RecipeAI github repo](https://github.com/CS3263-Group66/Group66-Project)
+1. Download the SmartFridge by cloning the repo from [SmartFridge github repo](https://github.com/CS3263-Group66/Group66-Project)
 2. set up the python virtual environment by running the following code
 - for Windows users:\
 `source venv/Scripts/activate`
@@ -19,7 +19,7 @@ RecipeAI is an AI tool that give recommendation of dishes based on the food avai
 
 ## Data Storage
 
-RecipeAI stores data locally:
+SmartFridge stores data locally:
 - **Foods:** `food_storage.json`
 - **Recipes:** `recipe_storage.json`
 
@@ -36,5 +36,5 @@ A list of available instructions is listed below. These instructions will also b
 | Remove a food from storage                      | `Remove x`                                      | Remove food item with index `x` from the current fridge. Index of food items can be found using `List` command.                                                  |
 | Query the recommended recipe                    | `Query`                                         | Returns the most recommended dish stored in the `RecipeBook`, this is determined by availability, freshness and other aspect of the food stored in the `Fridge`. |
 
-## Terminate RecipeAI
+## Terminate SmartFridge
 Currently we do not have a particular command that stops the app. It is fine to terminate the app using keyboard interruption `Ctrl + C` or simply closing the terminal.
